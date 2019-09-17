@@ -1,0 +1,8 @@
+.git
+node_modules
+build
+
+.editorconfig
+.eslintrc.json
+.gitignore
+README.md

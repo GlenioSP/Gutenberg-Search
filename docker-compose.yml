@@ -1,0 +1,51 @@
+version: "3"
+
+services:
+  gs-api:
+    container_name: gs-api
+    build:
+      context: api/
+      dockerfile: Dockerfile
+    shm_size: "256m"
+    ports:
+      - "5000:5000"
+    environment:
+      - ELASTICSEARCH_URL=http://gs-elasticsearch:9200
+    networks:
+      - docker-elk
+    depends_on:
+      - gs-elasticsearch
+
+  gs-ui:
+    container_name: gs-ui
+    build:
+      context: ui/
+      dockerfile: Dockerfile
+    ports:
+      - "80:80"
+    networks:
+      - docker-elk
+    depends_on:
+      - gs-api
+
+  gs-elasticsearch:
+    container_name: gs-elasticsearch
+    image: docker.elastic.co/elasticsearch/elasticsearch:6.1.1
+    ports:
+      - "9300:9300"
+      - "9200:9200"
+    environment:
+      - bootstrap.memory_lock=true
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+      - discovery.type=single-node
+    volumes:
+      - esdata:/usr/share/elasticsearch/data
+    networks:
+      - docker-elk
+
+volumes:
+  esdata:
+
+networks:
+  docker-elk:
+    driver: bridge
