@@ -18,7 +18,7 @@ Simple run:
 
 ### 3. Access app
 
-Access `localhost` in the browser.
+Access `localhost` in the browser. It takes a couple of seconds until the API can connect to Elasticsearch and be available to the UI.
 
 ### 4. Load book
 
