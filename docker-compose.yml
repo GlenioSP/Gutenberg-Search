@@ -1,4 +1,4 @@
-version: "3"
+version: "3.4"
 
 services:
   gs-api:
@@ -6,27 +6,21 @@ services:
     build:
       context: api/
       dockerfile: Dockerfile
-    shm_size: "256m"
     ports:
       - "5000:5000"
     environment:
-      - ELASTICSEARCH_URL=http://gs-elasticsearch:9200
-    networks:
-      - docker-elk
-    depends_on:
-      - gs-elasticsearch
+      - ELASTICSEARCH_URL=http://localhost:9200
+    network_mode: "host"
 
   gs-ui:
     container_name: gs-ui
     build:
       context: ui/
       dockerfile: Dockerfile
+      network: host
     ports:
       - "80:80"
-    networks:
-      - docker-elk
-    depends_on:
-      - gs-api
+    network_mode: "host"
 
   gs-elasticsearch:
     container_name: gs-elasticsearch
@@ -40,12 +34,7 @@ services:
       - discovery.type=single-node
     volumes:
       - esdata:/usr/share/elasticsearch/data
-    networks:
-      - docker-elk
+    network_mode: "host"
 
 volumes:
   esdata:
-
-networks:
-  docker-elk:
-    driver: bridge
