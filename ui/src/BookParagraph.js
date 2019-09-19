@@ -87,7 +87,13 @@ class BookParagraph extends Component {
         );
         fetchBookParagraphsEnd(bookParagraphs);
       } catch (e) {
-        fetchBookParagraphsError(e.response.data);
+        if (e.response !== undefined) {
+          fetchBookParagraphsError(e.response.data);
+        } else {
+          fetchBookParagraphsError({
+            message: "Search service is unavailable. Please try again."
+          });
+        }
       }
     })();
   };

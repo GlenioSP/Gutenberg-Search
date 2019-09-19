@@ -84,7 +84,13 @@ class Book extends Component {
       );
       fetchBooksEnd(books);
     } catch (e) {
-      fetchBooksError(e.response.data);
+      if (e.response !== undefined) {
+        fetchBooksError(e.response.data);
+      } else {
+        fetchBooksError({
+          message: "Search service is unavailable. Please try again."
+        });
+      }
     }
   };
 
