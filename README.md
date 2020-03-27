@@ -16,6 +16,10 @@ Simple run:
 
 `docker-compose up -d`
 
+or to always build the related images:
+
+`docker-compose up --build -d`
+
 ### 3. Access app
 
 Access `localhost` in the browser. It takes a couple of seconds until the API can connect to Elasticsearch and be available to the UI.
@@ -36,6 +40,10 @@ The `curl` command above will do a POST request to the `http://localhost:5000/bo
 ### 7. Stop app
 
 `docker-compose down`
+
+or to remove all related images too,
+
+`docker-compose down --rmi all`
 
 ## 6. Based on
 
