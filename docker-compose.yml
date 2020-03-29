@@ -9,18 +9,15 @@ services:
     ports:
       - "5000:5000"
     environment:
-      - ELASTICSEARCH_URL=http://localhost:9200
-    network_mode: "host"
+      - ELASTICSEARCH_URL=gs-elasticsearch:9200
 
   gs-ui:
     container_name: gs-ui
     build:
       context: ui/
       dockerfile: Dockerfile
-      network: host
     ports:
       - "80:80"
-    network_mode: "host"
 
   gs-elasticsearch:
     container_name: gs-elasticsearch
@@ -34,7 +31,6 @@ services:
       - discovery.type=single-node
     volumes:
       - esdata:/usr/share/elasticsearch/data
-    network_mode: "host"
 
 volumes:
   esdata:
