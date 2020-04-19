@@ -15,15 +15,15 @@ def create_app(config_class=Config):
 
     app.config.from_object(config_class)
 
-    app.elasticsearch = Elasticsearch([app.config['ELASTICSEARCH_URL']]) \
-        if app.config['ELASTICSEARCH_URL'] else None
+    elasticsearch_url = app.config['ELASTICSEARCH_URL']
+    app.elasticsearch = Elasticsearch([elasticsearch_url])
 
     with app.app_context():
         from app.error import bp as errors_bp
         app.register_blueprint(errors_bp)
 
         from app.book import bp as book_bp
-        app.register_blueprint(book_bp, url_prefix='/books')
+        app.register_blueprint(book_bp, url_prefix='/api/books')
 
     if not app.debug and not app.testing:
         if app.config['LOG_TO_STDOUT']:
@@ -43,5 +43,7 @@ def create_app(config_class=Config):
 
         app.logger.setLevel(logging.INFO)
         app.logger.info(f'{app_name.capitalize()} startup')
+
+    app.logger.info(f'Using elasticsearch service through {elasticsearch_url}')
 
     return app

@@ -10,6 +10,8 @@ services:
       - "5000:5000"
     environment:
       - ELASTICSEARCH_URL=gs-elasticsearch:9200
+    depends_on:
+      - gs-elasticsearch
 
   gs-ui:
     container_name: gs-ui
@@ -18,6 +20,8 @@ services:
       dockerfile: Dockerfile
     ports:
       - "80:80"
+    depends_on:
+      - gs-api
 
   gs-elasticsearch:
     container_name: gs-elasticsearch

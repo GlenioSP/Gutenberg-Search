@@ -1,9 +1,13 @@
 import axios from "axios";
 
-let baseUrl = "http://localhost:5000";
+let baseUrl = "http://localhost:5000/api";
 
-if (process.env.BOOK_SERVICE_URL) {
-  baseUrl = process.env.BOOK_SERVICE_URL;
+if (process.env.REACT_APP_USING_DOCKER === '1') {
+  /* 
+    When running inside docker the API is requested as a local web path. 
+    NGINX will then proxy the request to the right docker container service url. 
+  */
+  baseUrl = "/api";
 }
 
 export const SearchBooks = async(query, page, perPage, newEndpoint) => {
