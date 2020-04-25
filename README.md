@@ -32,7 +32,7 @@ Patrick created a service inside the app to read a folder containing 100 links t
 curl --header "Content-Type: application/json" \
   --request POST \
   --data '{"book_url":"https://www.gutenberg.org/files/1342/1342-0.txt"}' \
-  http://localhost:5000/books/load
+  http://localhost:5000/api/books/load
 ```
 
 The `curl` command above will do a POST request to the `http://localhost:5000/books/load` endpoint with a URL link to the famous Pride and Prejudice book by Jane Austen.
