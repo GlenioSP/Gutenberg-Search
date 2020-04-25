@@ -35,7 +35,7 @@ curl --header "Content-Type: application/json" \
   http://localhost:5000/api/books/load
 ```
 
-The `curl` command above will do a POST request to the `http://localhost:5000/books/load` endpoint with a URL link to the famous Pride and Prejudice book by Jane Austen.
+The `curl` command above will do a POST request to the `http://localhost:5000/api/books/load` endpoint with a URL link to the famous Pride and Prejudice book by Jane Austen.
 
 ### 7. Stop app
 
