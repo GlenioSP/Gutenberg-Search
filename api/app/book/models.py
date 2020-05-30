@@ -9,6 +9,14 @@ class Book(object):
     paragraphs: [str]
 
     @staticmethod
+    def remove_api_prefix_from_link_keys(links):
+        new_links = {}
+        for k, v in links.items():
+            if v:
+                new_links[k] = v.split("/api")[1]
+        return new_links
+
+    @staticmethod
     def to_collection_dict(items, query, search_page, endpoint):
         has_next_url = search_page.total > search_page.page * search_page.per_page
         has_prev_url = search_page.page > 1
@@ -19,16 +27,19 @@ class Book(object):
                 'per_page': search_page.per_page,
                 'total_pages': search_page.pages,
                 'total_items': search_page.total
-            },
-            '_links': {
-                'self': url_for(endpoint, q=query, page=search_page.page,
-                                per_page=search_page.per_page),
-                'next': url_for(endpoint, q=query, page=search_page.page + 1,
-                                per_page=search_page.per_page) if has_next_url else None,
-                'prev': url_for(endpoint, q=query, page=search_page.page - 1,
-                                per_page=search_page.per_page) if has_prev_url else None
             }
         }
+        links = {
+            'self': url_for(endpoint, q=query, page=search_page.page,
+                            per_page=search_page.per_page),
+            'next': url_for(endpoint, q=query, page=search_page.page + 1,
+                            per_page=search_page.per_page) if has_next_url else None,
+            'prev': url_for(endpoint, q=query, page=search_page.page - 1,
+                            per_page=search_page.per_page) if has_prev_url else None
+        }
+        data.update({
+            '_links': Book.remove_api_prefix_from_link_keys(links)
+        })
         return data
 
     @staticmethod
@@ -43,16 +54,19 @@ class Book(object):
                 'offset': offset,
                 'end': end,
                 'total_items': total
-            },
-            '_links': {
-                'self': url_for(endpoint, book_title=book_title, start=start,
-                                offset=offset),
-                'next': url_for(endpoint, book_title=book_title, start=end,
-                                offset=offset) if has_next_url else None,
-                'prev': url_for(endpoint, book_title=book_title, start=new_prev_start,
-                                offset=offset)
             }
         }
+        links = {
+            'self': url_for(endpoint, book_title=book_title, start=start,
+                            offset=offset),
+            'next': url_for(endpoint, book_title=book_title, start=end,
+                            offset=offset) if has_next_url else None,
+            'prev': url_for(endpoint, book_title=book_title, start=new_prev_start,
+                            offset=offset)
+        }
+        data.update({
+            '_links': Book.remove_api_prefix_from_link_keys(links)
+        })
         return data
 
 
